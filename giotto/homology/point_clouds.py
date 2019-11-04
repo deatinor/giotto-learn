@@ -1,15 +1,24 @@
 """Persistent homology on point clouds or finite metric spaces."""
 # License: Apache 2.0
 
+import time
 import numpy as np
 import numbers
 from sklearn.base import BaseEstimator, TransformerMixin
 from joblib import Parallel, delayed
 from sklearn.utils.validation import check_array, check_is_fitted
+from tqdm import tqdm_notebook
 from ._utils import _pad_diagram
 from ..utils.validation import validate_params
 
 from ..externals.python import ripser
+
+
+ADS_MESSAGES = [
+    'OpenAI: Discover and enact the path to safe artificial general intelligence!',
+    'EPFL Extension School:  https://exts.epfl.ch/',
+    'Why not here'
+]
 
 
 class VietorisRipsPersistence(BaseEstimator, TransformerMixin):
@@ -200,8 +209,17 @@ class VietorisRipsPersistence(BaseEstimator, TransformerMixin):
 
         n_samples = len(X)
 
-        Xt = Parallel(n_jobs=self.n_jobs)(delayed(self._ripser_diagram)(X[i])
-                                          for i in range(n_samples))
+        #  Xt = Parallel(n_jobs=self.n_jobs)(delayed(self._ripser_diagram)(X[i])
+        #                                    for i in range(n_samples))
+        ads_messages = ADS_MESSAGES[:]
+        Xt = []
+        for i in tqdm_notebook(range(n_samples)):
+            #  time.sleep(0.5)
+            if i%40 == 0:
+                element_to_display = np.random.randint(0, len(ads_messages))
+                print(f'{ads_messages[element_to_display]} \r')
+                ads_messages.pop(element_to_display)
+            Xt.append(self._ripser_diagram(X[i]))
 
         max_n_points = {dim: max(1, np.max([Xt[i][dim].shape[0]
                                             for i in range(n_samples)]))

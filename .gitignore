@@ -17,6 +17,7 @@ examples/.ipynb_checkpoints
 *.pkl
 *.csv
 *.pqt
+*.swp
 data/*
 
 # Examples
