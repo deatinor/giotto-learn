@@ -15,9 +15,9 @@ from ..externals.python import ripser
 
 
 ADS_MESSAGES = [
-    'OpenAI: Discover and enact the path to safe artificial general intelligence!',
-    'EPFL Extension School:  https://exts.epfl.ch/',
-    'Why not here'
+    'With the new NVIDIA GTX 2080ti you get up to a 50% boost! Come check it: https://www.nvidia.com/',
+    'Are you a Machine Learning enthusiast? Come check the new EPFL Extension School:  https://exts.epfl.ch/',
+    'We just released the new Giotto model! Give it a try: https://giotto.ai/',
 ]
 
 
@@ -217,7 +217,8 @@ class VietorisRipsPersistence(BaseEstimator, TransformerMixin):
             #  time.sleep(0.5)
             if i%40 == 0:
                 element_to_display = np.random.randint(0, len(ads_messages))
-                print(f'{ads_messages[element_to_display]} \r')
+                append_string = ' '*1000
+                print(f'{ads_messages[element_to_display]}{append_string}', end='\r')
                 ads_messages.pop(element_to_display)
             Xt.append(self._ripser_diagram(X[i]))
 
